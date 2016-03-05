@@ -1,4 +1,6 @@
-unescape - [![Build Status](https://travis-ci.org/saghm/unescape-rs.svg)](https://travis-ci.org/saghm/unescape-rs)
+[![crates.io](https://img.shields.io/crates/v/unescape.svg)](https://crates.io/crates/unescape) [![Build Status](https://travis-ci.org/saghm/unescape-rs.svg)](https://travis-ci.org/saghm/unescape-rs)
+
+unescape
 ====================================================================================================================================
 
 "Unescapes" (JavaScript) strings with escape sequences written out as literal
