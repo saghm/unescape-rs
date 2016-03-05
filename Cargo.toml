@@ -2,5 +2,10 @@
 name = "unescape"
 version = "0.1.0"
 authors = ["Saghm Rossi <saghmrossi@gmail.com>"]
+description = "Unescapes strings with escape sequences written out as literal characters."
+repository = "https://github.com/saghm/unescape-rs"
+readme = "README.md"
+keywords = ["unescape", "unicode", "escape", "string", "strings"]
+license = "MIT"
 
 [dependencies]
