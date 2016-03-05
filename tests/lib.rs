@@ -17,28 +17,28 @@ fn no_escapes() {
 
 #[test]
 fn control_chars() {
-    assert_some_string!("First line\nSecond line", "First line\\nSecond line");
-    assert_some_string!("First line\r\nSecond line", "First line\\r\\nSecond line");
-    assert_some_string!("Unindented\tIndented", "Unindented\tIndented");
-    assert_some_string!("'This is singly quoted!'", "\\'This is singly quoted!\\'");
-    assert_some_string!("\"This is doubly quoted!\"", "\\\"This is doubly quoted!\\\"");
-    assert_some_string!("This is one backslash: \\", "This is one backslash: \\\\");
+    assert_some_string!("First line\nSecond line", r"First line\nSecond line");
+    assert_some_string!("First line\r\nSecond line", r"First line\r\nSecond line");
+    assert_some_string!("Unindented\tIndented", r"Unindented\tIndented");
+    assert_some_string!("'This is singly quoted!'", r"\'This is singly quoted!\'");
+    assert_some_string!("\"This is doubly quoted!\"", r#"\"This is doubly quoted!\""#);
+    assert_some_string!("This is one backslash: \\", r"This is one backslash: \\");
 }
 
 #[test]
 fn unicode_chars() {
-    assert_some_string!("\n", "\\u000A");
-    assert_some_string!("\u{1234}", "\\u1234");
+    assert_some_string!("\n", r"\u000A");
+    assert_some_string!("\u{1234}", r"\u1234");
 }
 
 #[test]
 fn byte_chars() {
-    assert_some_string!("\n", "\\x0A");
-    assert_some_string!("\x23", "\\x23");
+    assert_some_string!("\n", r"\x0A");
+    assert_some_string!("\x23", r"\x23");
 }
 
 #[test]
 fn octal_chars() {
-    assert_some_string!("\n", "\\12");
-    assert_some_string!("\u{00C4}", "\\304");
+    assert_some_string!("\n", r"\12");
+    assert_some_string!("\u{00C4}", r"\304");
 }
