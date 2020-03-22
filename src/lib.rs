@@ -65,35 +65,38 @@ fn unescape_byte(queue: &mut VecDeque<char>) -> Option<char> {
 }
 
 fn unescape_octal(c: char, queue: &mut VecDeque<char>) -> Option<char> {
-    match unescape_octal_leading(c, queue) {
-        Some(ch) => {
-            let _ = queue.pop_front();
-            let _ = queue.pop_front();
-            Some(ch)
+    let mut s = String::new();
+    s.push(c);
+
+    match c {
+        '0' | '1' | '2' | '3' => {
+            if push_octal_char(queue, &mut s) {
+                push_octal_char(queue, &mut s);
+            }
         }
-        None => unescape_octal_no_leading(c, queue)
+        '4' | '5' | '6' | '7' => {
+            push_octal_char(queue, &mut s);
+        }
+        _ => {}
     }
-}
-
-fn unescape_octal_leading(c: char, queue: &VecDeque<char>) -> Option<char> {
-    if c != '0' && c != '1' && c != '2' && c != '3' {
-        return None;
-    }
-
-    let mut s = String::new();
-    s.push(c);
-    s.push(*try_option!(queue.get(0)));
-    s.push(*try_option!(queue.get(1)));
 
     let u = try_option!(u32::from_str_radix(&s, 8).ok());
     char::from_u32(u)
 }
 
-fn unescape_octal_no_leading(c: char, queue: &mut VecDeque<char>) -> Option<char> {
-    let mut s = String::new();
-    s.push(c);
-    s.push(try_option!(queue.pop_front()));
-
-    let u = try_option!(u32::from_str_radix(&s, 8).ok());
-    char::from_u32(u)
+/// Looks at the queue and pushes the next character to the string if it's an
+/// octal digit. Returns whether a push was done.
+fn push_octal_char(queue: &mut VecDeque<char>, s: &mut String) -> bool {
+    match queue.front() {
+        Some(c) => {
+            if c.is_digit(8) {
+                s.push(*c);
+                queue.pop_front();
+                true
+            } else {
+                false
+            }
+        }
+        None => false,
+    }
 }
