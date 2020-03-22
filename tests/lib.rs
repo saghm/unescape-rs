@@ -41,4 +41,10 @@ fn byte_chars() {
 fn octal_chars() {
     assert_some_string!("\n", r"\12");
     assert_some_string!("\u{00C4}", r"\304");
+    assert_some_string!("\0ABC", r"\0ABC");
+    assert_some_string!("\0", r"\0");
+    assert_some_string!("\u{7}ABC", r"\7ABC");
+    assert_some_string!("\u{7}ABC", r"\007ABC");
+    assert_some_string!("\u{A}9", r"\129");
+    assert_some_string!("\u{23}2", r"\432");
 }
