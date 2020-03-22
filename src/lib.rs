@@ -11,8 +11,21 @@ macro_rules! try_option {
     }
 }
 
-// Takes in a string with backslash escapes written out with literal backslash characters and
-// converts it to a string with the proper escaped characters.
+/// Takes in a string with backslash escapes written out with literal backslash characters and
+/// converts it to a string with the proper escaped characters.
+///
+/// This is the reverse operation to [str::escape_default].
+///
+/// # Arguments
+///
+/// * `s`: String to unescape.
+///
+/// # Returns
+///
+/// On success, the unescaped string is returned. If invalid escape sequences were found, `None`
+/// is returned.
+///
+/// [str::escape_default]: https://doc.rust-lang.org/std/primitive.str.html#method.escape_default
 pub fn unescape(s: &str) -> Option<String> {
     let mut queue : VecDeque<_> = String::from(s).chars().collect();
     let mut s = String::new();
