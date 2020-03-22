@@ -29,6 +29,13 @@ fn control_chars() {
 fn unicode_chars() {
     assert_some_string!("\n", r"\u000A");
     assert_some_string!("\u{1234}", r"\u1234");
+    assert_some_string!("\u{1234}", r"\u{1234}");
+    assert_some_string!("\u{A}", r"\u{a}");
+
+    assert_eq!(None, unescape(r"\u000G"));
+    assert_eq!(None, unescape(r"\u0A"));
+    assert_eq!(None, unescape(r"\u{}"));
+    assert_eq!(None, unescape(r"\u{a"));
 }
 
 #[test]
@@ -41,4 +48,12 @@ fn byte_chars() {
 fn octal_chars() {
     assert_some_string!("\n", r"\12");
     assert_some_string!("\u{00C4}", r"\304");
+}
+
+#[test]
+fn revert_escape_default() {
+    let original = "Some\ttest with ÜñıⒸºḋᴱ and\\traditional\nC-escape codes";
+    let escaped = original.escape_default().to_string();
+    println!("{}", escaped);
+    assert_some_string!(original, &escaped);
 }

@@ -45,8 +45,21 @@ pub fn unescape(s: &str) -> Option<String> {
 fn unescape_unicode(queue: &mut VecDeque<char>) -> Option<char> {
     let mut s = String::new();
 
-    for _ in 0..4 {
-        s.push(try_option!(queue.pop_front()));
+    if try_option!(queue.front()) == &'{' {
+        // \u{X} form with an arbitrary number of digits.
+        queue.pop_front();
+        'outer: loop {
+            match queue.pop_front() {
+                Some('}') => break 'outer,
+                Some(c) => s.push(c),
+                None => return None,
+            }
+        }
+    } else {
+        // \uXXXX form with exactly four digits.
+        for _ in 0..4 {
+            s.push(try_option!(queue.pop_front()));
+        }
     }
 
     let u = try_option!(u32::from_str_radix(&s, 16).ok());
